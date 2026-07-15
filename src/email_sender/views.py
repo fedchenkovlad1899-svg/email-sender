@@ -21,5 +21,3 @@ def about(request,):
 
     return render(request, 'about.html')
 
-def index(request):
-    return HttpResponse("HELwefwefwefLO")

@@ -1,11 +1,10 @@
 
 from django.urls import path
-from email_sender.views import index,about,home,campaign,contact,message_template,statistic
+from email_sender.views import about,home,campaign,contact,message_template,statistic
 
 
 
 urlpatterns = [
-    path('index/', index, name='index'),
     path('about/', about, name='about'),
     path('home/', home, name='home'),
     path('campaign/', campaign, name='campaign'),
