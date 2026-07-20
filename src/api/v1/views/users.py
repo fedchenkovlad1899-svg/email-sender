@@ -3,7 +3,9 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAdminUser,AllowAny
 from rest_framework.generics import ListAPIView
 from users.models import User
-from api.v1.users.serializers import (
+from email_sender.models import Contact
+from drf_spectacular.utils import extend_schema
+from api.v1.serializers import (
     RegisterSerializer,
     LoginSerializer,
     UserSerializer,
@@ -13,7 +15,8 @@ from api.v1.users.serializers import (
 )
 
 
-#POST /api/users/register/
+#POST /register/
+@extend_schema(tags=['User'])
 class RegisterView(generics.CreateAPIView):
     """
     Регистрация пользователя
@@ -23,7 +26,8 @@ class RegisterView(generics.CreateAPIView):
 
 
 
-#POST /api/users/login/
+#POST /login/
+@extend_schema(tags=['User'])
 class LoginView(generics.GenericAPIView):
     """
     Авторизация пользователя по email и паролю
@@ -38,7 +42,8 @@ class LoginView(generics.GenericAPIView):
 
 
 
-#GET/PUT/PATCH  /api/users/profile/
+#GET/PUT/PATCH  /profile/
+@extend_schema(tags=['User'])
 class ProfileView(generics.RetrieveUpdateAPIView):
     """
     Просмотр и изменение профиля пользователя
@@ -50,7 +55,8 @@ class ProfileView(generics.RetrieveUpdateAPIView):
         return self.request.user
 
 
-#POST /api/users/logout/
+#POST /logout/
+@extend_schema(tags=['User'])
 class LogoutView(generics.GenericAPIView):
     """
     Выход пользователя
@@ -62,12 +68,10 @@ class LogoutView(generics.GenericAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return Response(
-            {"detail": "Вы вышли из системы."},
-            status=status.HTTP_205_RESET_CONTENT
-        )
+        return Response({"detail": "Вы вышли из системы."},status=status.HTTP_205_RESET_CONTENT)
 
-#POST /api/users/change_password/
+#POST /change_password/
+@extend_schema(tags=['User'])
 class ChangePasswordView(generics.GenericAPIView):
     """
     Смена пароля
@@ -81,15 +85,13 @@ class ChangePasswordView(generics.GenericAPIView):
         user = request.user
         user.set_password(serializer.validated_data["new_password"])
         user.save()
-        return Response(
-            {"detail": "Пароль успешно изменен."},
-            status=status.HTTP_200_OK
-        )
+        return Response({"detail": "Пароль успешно изменен."},status=status.HTTP_200_OK)
 
 
 #для админа
 
-#GET  /api/users/profiles/
+#GET /profiles/
+@extend_schema(tags=['Admin_only'])
 class UserListView(generics.ListAPIView):
     """
     Вывод списка всех пользователей
@@ -98,7 +100,8 @@ class UserListView(generics.ListAPIView):
     serializer_class = UserSerializer
     permission_classes = [IsAdminUser]
 
-#GET  /api/users/users{id}/
+#GET /users/{id}/
+@extend_schema(tags=['Admin_only'])
 class UserDetailView(generics.RetrieveAPIView):
     """
     Просмотр пользователя администратором
@@ -107,7 +110,8 @@ class UserDetailView(generics.RetrieveAPIView):
     serializer_class = UserSerializer
     permission_classes = [IsAdminUser]
 
-#PUT/PATCH  /api/users/users{id}/status
+#PUT/PATCH /users/{id}/status
+@extend_schema(tags=['Admin_only'])
 class UserStatusView(generics.UpdateAPIView):
     """
     Блокировка/разблокировка пользователя
@@ -116,7 +120,8 @@ class UserStatusView(generics.UpdateAPIView):
     serializer_class = UserStatusSerializer
     permission_classes = [IsAdminUser]
 
-#DELETE  /api/users/users{id}/delete
+#DELETE  /users/{id}/delete
+@extend_schema(tags=['Admin_only'])
 class UserDeleteView(generics.DestroyAPIView):
     """
     Удаление пользователя

@@ -63,7 +63,7 @@ class LoginSerializer(serializers.Serializer):
 
 class UserSerializer(serializers.ModelSerializer):
     """
-    Профиль пользователя.
+    Профиль пользователя
     """
     class Meta:
         model = User
