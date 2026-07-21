@@ -18,9 +18,16 @@ from .contacts import (
     ContactDeleteView
 )
 from .message_templates import (
-MessageTemplateListView,
-MessageTemplateCreateView,
-MessageTemplateRetrieveView,
-MessageTemplateUpdateView,
-MessageTemplateDeleteView
+    MessageTemplateListView,
+    MessageTemplateCreateView,
+    MessageTemplateRetrieveView,
+    MessageTemplateUpdateView,
+    MessageTemplateDeleteView
+)
+from .contact_groups import (
+    ContactGroupListView,
+    ContactGroupCreateView,
+    ContactGroupRetrieveView,
+    ContactGroupUpdateView,
+    ContactGroupDeleteView
 )

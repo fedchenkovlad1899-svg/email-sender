@@ -1,6 +1,4 @@
 from django.urls import path
-
-from api.v1.views import MessageTemplateListView, MessageTemplateCreateView
 from api.v1.views.users import (
     RegisterView,
     LoginView,
@@ -25,6 +23,13 @@ from api.v1.views.message_templates import (
     MessageTemplateRetrieveView,
     MessageTemplateUpdateView,
     MessageTemplateDeleteView
+)
+from api.v1.views.contact_groups import (
+    ContactGroupListView,
+    ContactGroupCreateView,
+    ContactGroupRetrieveView,
+    ContactGroupUpdateView,
+    ContactGroupDeleteView
 )
 
 
@@ -52,6 +57,12 @@ urlpatterns = [
     path("messages/<int:pk>/",MessageTemplateRetrieveView.as_view(), name="template_detail",),
     path("messages/<int:pk>/update/",MessageTemplateUpdateView.as_view(),name="template_update",),
     path("messages/<int:pk>/delete/",MessageTemplateDeleteView.as_view(),name="template_delete",),
+    #contact_groups
+    path("groups/",ContactGroupListView.as_view(),name="contact_group_list",),
+    path("groups/create/",ContactGroupCreateView.as_view(),name="contact_group_create",),
+    path("groups/<int:pk>/",ContactGroupRetrieveView.as_view(),name="contact_group_detail",),
+    path("groups/<int:pk>/update/",ContactGroupUpdateView.as_view(),name="contact_group_update",),
+    path("groups/<int:pk>/delete/",ContactGroupDeleteView.as_view(),name="contact_group_delete",),
 
 ]
 

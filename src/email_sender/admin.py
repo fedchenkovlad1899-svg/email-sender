@@ -1,7 +1,5 @@
 from django.contrib import admin
-
-from .models import Contact
-from email_sender.models import MessageTemplate
+from email_sender.models import Contact, MessageTemplate, ContactGroup
 
 
 
@@ -32,3 +30,17 @@ class MessageTemplateAdmin(admin.ModelAdmin):
         "subject",
     )
     list_filter = ( "created_at",)
+
+
+
+
+@admin.register(ContactGroup)
+class ContactGroupAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "title",
+        "owner",
+        "created_at",
+    )
+    search_fields = ("title",)
+    filter_horizontal = ("contacts",)#для админки.2 колонки для вкл в список

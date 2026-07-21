@@ -8,3 +8,4 @@ from .users import (
 )
 from .contacts import ContactSerializer
 from .message_templates import MessageTemplateSerializer
+from .contact_groups import ContactGroupSerializer
