@@ -2,12 +2,12 @@ from django.contrib.auth import get_user_model,authenticate
 from rest_framework import serializers
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.exceptions import TokenError
+from drf_spectacular.utils import extend_schema_serializer
+
 
 User = get_user_model()
 
-
-
-
+@extend_schema_serializer(component_name="User_RegisterSerializer")
 class RegisterSerializer(serializers.ModelSerializer):
     """
     Регистрация пользователя
@@ -28,7 +28,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         return User.objects.create_user(**validated_data)
 
 
-
+@extend_schema_serializer(component_name="User_LoginSerializer")
 class LoginSerializer(serializers.Serializer):
     """
     Авторизация пользователя по email и паролю
@@ -60,7 +60,6 @@ class LoginSerializer(serializers.Serializer):
         }
 
 
-
 class UserSerializer(serializers.ModelSerializer):
     """
     Профиль пользователя
@@ -81,7 +80,7 @@ class UserSerializer(serializers.ModelSerializer):
             "date_joined",
         )
 
-
+@extend_schema_serializer(component_name="User_LogoutSerializer")
 class LogoutSerializer(serializers.Serializer):
     """
     Выход
@@ -97,6 +96,7 @@ class LogoutSerializer(serializers.Serializer):
                 {"refresh": "проверьте refresh-токен."}
             )
 
+@extend_schema_serializer(component_name="User_ChangePasswordSerializer")
 class ChangePasswordSerializer(serializers.Serializer):
     """
     Смена пароля
@@ -120,7 +120,12 @@ class ChangePasswordSerializer(serializers.Serializer):
 
 
 #для блокировки
+
+@extend_schema_serializer(component_name="User_StatusSerializer")
 class UserStatusSerializer(serializers.ModelSerializer):
+    '''
+    статус
+    '''
     class Meta:
         model = User
         fields = (

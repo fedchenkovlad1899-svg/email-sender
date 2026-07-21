@@ -1,6 +1,7 @@
 from django.contrib import admin
 
 from .models import Contact
+from email_sender.models import MessageTemplate
 
 
 
@@ -16,6 +17,18 @@ class ContactAdmin(admin.ModelAdmin):
         "name",
         "email",
     )
-    list_filter = (
+    list_filter = ("owner",)
+
+@admin.register(MessageTemplate)
+class MessageTemplateAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "title",
         "owner",
+        "created_at",
     )
+    search_fields = (
+        "title",
+        "subject",
+    )
+    list_filter = ( "created_at",)

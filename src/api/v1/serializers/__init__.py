@@ -7,3 +7,4 @@ from .users import (
     UserStatusSerializer
 )
 from .contacts import ContactSerializer
+from .message_templates import MessageTemplateSerializer

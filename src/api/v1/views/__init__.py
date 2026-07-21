@@ -17,3 +17,10 @@ from .contacts import (
     ContactUpdateView,
     ContactDeleteView
 )
+from .message_templates import (
+MessageTemplateListView,
+MessageTemplateCreateView,
+MessageTemplateRetrieveView,
+MessageTemplateUpdateView,
+MessageTemplateDeleteView
+)

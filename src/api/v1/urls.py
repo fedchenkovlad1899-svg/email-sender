@@ -1,4 +1,6 @@
 from django.urls import path
+
+from api.v1.views import MessageTemplateListView, MessageTemplateCreateView
 from api.v1.views.users import (
     RegisterView,
     LoginView,
@@ -16,6 +18,13 @@ from api.v1.views.contacts import (
     ContactRetrieveView,
     ContactUpdateView,
     ContactDeleteView,
+)
+from api.v1.views.message_templates import (
+    MessageTemplateListView,
+    MessageTemplateCreateView,
+    MessageTemplateRetrieveView,
+    MessageTemplateUpdateView,
+    MessageTemplateDeleteView
 )
 
 
@@ -37,6 +46,12 @@ urlpatterns = [
     path("contacts/<int:pk>/", ContactRetrieveView.as_view(),name="contact_detail",),
     path("contacts/<int:pk>/update/",ContactUpdateView.as_view(),name="contact_update",),
     path("contacts/<int:pk>/delete/",ContactDeleteView.as_view(),name="contact_delete",),
+    #message_templates
+    path("messages/",MessageTemplateListView.as_view(),name="message_list",),
+    path("messages/create/",MessageTemplateCreateView.as_view(),name="message_create",),
+    path("messages/<int:pk>/",MessageTemplateRetrieveView.as_view(), name="template_detail",),
+    path("messages/<int:pk>/update/",MessageTemplateUpdateView.as_view(),name="template_update",),
+    path("messages/<int:pk>/delete/",MessageTemplateDeleteView.as_view(),name="template_delete",),
 
 ]
 

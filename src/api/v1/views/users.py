@@ -3,7 +3,6 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAdminUser,AllowAny
 from rest_framework.generics import ListAPIView
 from users.models import User
-from email_sender.models import Contact
 from drf_spectacular.utils import extend_schema
 from api.v1.serializers import (
     RegisterSerializer,
@@ -121,10 +120,15 @@ class UserStatusView(generics.UpdateAPIView):
     permission_classes = [IsAdminUser]
 
 #DELETE  /users/{id}/delete
-@extend_schema(tags=['Admin_only'])
+@extend_schema(
+    tags=['Admin_only'],
+    request=None,          #чтобы убрать ошибку.тк не задаем сериалайзер
+    responses={204: None}
+)
 class UserDeleteView(generics.DestroyAPIView):
     """
     Удаление пользователя
     """
     queryset = User.objects.all()
     permission_classes = [IsAdminUser]
+
