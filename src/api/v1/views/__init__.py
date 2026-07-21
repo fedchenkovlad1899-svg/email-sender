@@ -31,3 +31,10 @@ from .contact_groups import (
     ContactGroupUpdateView,
     ContactGroupDeleteView
 )
+from .campaigns import (
+    CampaignListView,
+    CampaignCreateView,
+    CampaignRetrieveView,
+    CampaignUpdateView,
+    CampaignDeleteView
+)

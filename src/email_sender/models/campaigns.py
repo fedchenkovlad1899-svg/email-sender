@@ -2,6 +2,7 @@ from django.conf import settings
 from django.db import models
 from .contacts import Contact
 from .message_templates import MessageTemplate
+from .contact_groups import ContactGroup
 
 
 class Campaign(models.Model):
@@ -11,9 +12,10 @@ class Campaign(models.Model):
     class SendingStatus(models.TextChoices):
         DRAFT = "draft", "Черновик"
         SCHEDULED = "scheduled", "Запланирована"
-        SENDING = "sending", "Отправляется"
-        SENT = "sent", "Завершена"
+        PROCESSING  = "processing", "Отправляется"
+        COMPLETED  = "completed", "Завершена"
         FAILED = "failed", "Ошибка"
+        CANCELED = "canceled", "Отменена"
 
     owner = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -33,8 +35,17 @@ class Campaign(models.Model):
     )
     contacts = models.ManyToManyField(
         Contact,
+        blank=True,
         related_name="campaigns",
         verbose_name="Контакты",
+    )
+    contact_group = models.ForeignKey(
+        ContactGroup,
+        on_delete=models.SET_NULL,   #чтобы отсалась история рассылки ,если удалят группу контактов
+        null=True,
+        blank=True,
+        related_name="campaigns",
+        verbose_name="Группа контактов",
     )
     status = models.CharField(
         max_length=20,

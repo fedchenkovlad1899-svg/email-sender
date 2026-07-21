@@ -1,6 +1,10 @@
 from django.contrib import admin
-from email_sender.models import Contact, MessageTemplate, ContactGroup
-
+from email_sender.models import (
+    Contact,
+    MessageTemplate,
+    ContactGroup,
+    Campaign
+)
 
 
 @admin.register(Contact)
@@ -44,3 +48,17 @@ class ContactGroupAdmin(admin.ModelAdmin):
     )
     search_fields = ("title",)
     filter_horizontal = ("contacts",)#для админки.2 колонки для вкл в список
+
+
+@admin.register(Campaign)
+class CampaignAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "title",
+        "owner",
+        "status",
+        "scheduled_at",
+    )
+    list_filter = ("status",)
+    search_fields = ("title",)
+    filter_horizontal = ("contacts",)

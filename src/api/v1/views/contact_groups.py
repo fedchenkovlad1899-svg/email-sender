@@ -7,6 +7,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
 
 
+@extend_schema(tags=['Groups'])
 class ContactGroupListView(generics.ListAPIView):
     """
     Список групп контактов
@@ -28,7 +29,7 @@ class ContactGroupListView(generics.ListAPIView):
 
 
 
-
+@extend_schema(tags=['Groups'])
 class ContactGroupCreateView(generics.CreateAPIView):
     """
     Создание группы контактов
@@ -40,7 +41,7 @@ class ContactGroupCreateView(generics.CreateAPIView):
         serializer.save(owner=self.request.user)
 
 
-
+@extend_schema(tags=['Groups'])
 class ContactGroupRetrieveView(generics.RetrieveAPIView):
     """
     Просмотр группы контактов
@@ -52,7 +53,7 @@ class ContactGroupRetrieveView(generics.RetrieveAPIView):
         return ContactGroup.objects.filter(owner=self.request.user)
 
 
-
+@extend_schema(tags=['Groups'])
 class ContactGroupUpdateView(generics.UpdateAPIView):
     """
     Изменение группы контактов
@@ -67,7 +68,7 @@ class ContactGroupUpdateView(generics.UpdateAPIView):
 
 
 
-
+@extend_schema(tags=['Groups'])
 class ContactGroupDeleteView(generics.DestroyAPIView):
     """
     Удаление группы контактов

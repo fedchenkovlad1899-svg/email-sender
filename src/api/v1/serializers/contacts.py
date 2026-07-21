@@ -22,3 +22,4 @@ class ContactSerializer(serializers.ModelSerializer):
             "created_at",
             "updated_at",
         )
+

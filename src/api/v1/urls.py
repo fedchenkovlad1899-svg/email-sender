@@ -32,6 +32,14 @@ from api.v1.views.contact_groups import (
     ContactGroupDeleteView
 )
 
+from api.v1.views.campaigns import (
+    CampaignListView,
+    CampaignCreateView,
+    CampaignRetrieveView,
+    CampaignUpdateView,
+    CampaignDeleteView
+)
+
 
 
 urlpatterns = [
@@ -63,6 +71,13 @@ urlpatterns = [
     path("groups/<int:pk>/",ContactGroupRetrieveView.as_view(),name="contact_group_detail",),
     path("groups/<int:pk>/update/",ContactGroupUpdateView.as_view(),name="contact_group_update",),
     path("groups/<int:pk>/delete/",ContactGroupDeleteView.as_view(),name="contact_group_delete",),
+    #campaigns
+    path("campaigns/",CampaignListView.as_view(),name="campaign_list",),
+    path("campaigns/create/",CampaignCreateView.as_view(),name="campaign_create",),
+    path("campaigns/<int:pk>/",CampaignRetrieveView.as_view(),name="campaign_detail",),
+    path("campaigns/<int:pk>/update/",CampaignUpdateView.as_view(),name="campaign_update",),
+    path("campaigns/<int:pk>/delete/",CampaignDeleteView.as_view(),name="campaign_delete",),
+
 
 ]
 
