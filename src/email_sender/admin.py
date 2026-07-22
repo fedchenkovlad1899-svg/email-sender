@@ -3,7 +3,8 @@ from email_sender.models import (
     Contact,
     MessageTemplate,
     ContactGroup,
-    Campaign
+    Campaign,
+    EmailLog,
 )
 
 
@@ -62,3 +63,19 @@ class CampaignAdmin(admin.ModelAdmin):
     list_filter = ("status",)
     search_fields = ("title",)
     filter_horizontal = ("contacts",)
+
+
+@admin.register(EmailLog)
+class EmailLogAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "campaign",
+        "contact",
+        "status",
+        "sent_at",
+    )
+    list_filter = ("status",)
+    search_fields = (
+        "contact__email",
+        "campaign__title",
+    )

@@ -38,3 +38,7 @@ from .campaigns import (
     CampaignUpdateView,
     CampaignDeleteView
 )
+from  .email_logs import (
+    EmailLogListView,
+    EmailLogRetrieveView
+)

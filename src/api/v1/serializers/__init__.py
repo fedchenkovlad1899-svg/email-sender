@@ -10,3 +10,4 @@ from .contacts import ContactSerializer
 from .message_templates import MessageTemplateSerializer
 from .contact_groups import ContactGroupSerializer
 from .campaigns import CampaignSerializer
+from  .email_logs import EmailLogSerializer
