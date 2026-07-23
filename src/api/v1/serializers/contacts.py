@@ -37,10 +37,9 @@ class ContactImportSerializer(serializers.Serializer):
     def validate_file(self, file):
         filename = file.name.lower()
         if not filename.endswith((".csv", ".xlsx")):
-            raise serializers.ValidationError("поддерживаются только CSV и XLSX файлы")
+            raise serializers.ValidationError("Поддерживаются только CSV и XLSX файлы")
 
         max_size = 5 * 1024 * 1024
         if file.size > max_size:
-            raise serializers.ValidationError("Размер файла не должен превышать 5 МБ"
-            )
+            raise serializers.ValidationError("Размер файла не должен превышать 5 МБ")
         return file
