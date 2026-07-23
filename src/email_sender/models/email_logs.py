@@ -20,7 +20,7 @@ class EmailLog(models.Model):
     )
     contact = models.ForeignKey(
         Contact,
-        on_delete=models.CASCADE,
+        on_delete=models.PROTECT,
         related_name="email_logs",
         verbose_name="Контакт",
     )
