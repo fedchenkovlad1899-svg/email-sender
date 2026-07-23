@@ -15,7 +15,8 @@ from .contacts import (
     ContactCreateView,
     ContactRetrieveView,
     ContactUpdateView,
-    ContactDeleteView
+    ContactDeleteView,
+    ContactImportView
 )
 from .message_templates import (
     MessageTemplateListView,

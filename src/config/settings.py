@@ -184,6 +184,7 @@ SPECTACULAR_SETTINGS = {
     'DESCRIPTION': ' API проекта по автоматизации email-рассылок',
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
+    'COMPONENT_SPLIT_REQUEST': True,#выбор файладля импорта контактов
     # OTHER SETTINGS
 }
 
