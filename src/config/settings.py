@@ -213,3 +213,13 @@ EMAIL_USE_TLS = env.bool("EMAIL_USE_TLS")
 EMAIL_HOST_USER = env("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
 DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL")
+
+
+#  CELERY
+CELERY_TIMEZONE = TIME_ZONE   #такой же что настроен у django
+CELERY_BROKER_URL = env("CELERY_BROKER_URL",default="redis://127.0.0.1:6379/0")  #чз env  для doker-а
+CELERY_RESULT_BACKEND = env("CELERY_RESULT_BACKEND",default="redis://127.0.0.1:6379/1")
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' #для тестов.чтобы пистьма не отправлялись а печатались в консоль
