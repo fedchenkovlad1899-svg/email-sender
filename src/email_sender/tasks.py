@@ -1,6 +1,7 @@
 from celery import shared_task
 from email_sender.models import Campaign
 from email_sender.services.email_sender import send_campaign
+from django.utils import timezone
 
 
 #тестовое для проверки работоспособности
@@ -50,4 +51,25 @@ def send_campaign_task(campaign_id):
         "total": result["total"],
         "sent": result["sent"],
         "failed": result["failed"],
+    }
+
+
+@shared_task
+def check_scheduled_campaigns():
+    """
+    поиск рассылок по статусу ЗАПЛАНИРОВАНО и передача их в celery
+    """
+    campaigns = Campaign.objects.filter(
+        status=Campaign.SendingStatus.SCHEDULED,
+        scheduled_at__isnull=False,
+        scheduled_at__lte=timezone.now(),
+    )
+    campaign_ids = []
+
+    for campaign in campaigns:
+        send_campaign_task.delay(campaign.id)
+        campaign_ids.append(campaign.id)
+    return {
+        "scheduled_count": len(campaign_ids),
+        "campaign_ids": campaign_ids,
     }

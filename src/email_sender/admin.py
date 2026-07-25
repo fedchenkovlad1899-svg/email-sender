@@ -181,7 +181,6 @@ class CampaignAdmin(admin.ModelAdmin):
     ordering = (
         "-created_at",
     )
-
     fieldsets = (
         (
             "Основная информация",
@@ -235,6 +234,21 @@ class CampaignAdmin(admin.ModelAdmin):
             },
         ),
     )
+
+
+    def save_model(self, request, obj, form, change):
+        """
+        для смены статуса c DRAFT на SCHEDULED при добавлении чз админку
+        """
+
+        if (obj.status == Campaign.SendingStatus.DRAFT and obj.scheduled_at):
+            obj.status = Campaign.SendingStatus.SCHEDULED
+        super().save_model(
+            request,
+            obj,
+            form,
+            change,
+        )
 
 
 

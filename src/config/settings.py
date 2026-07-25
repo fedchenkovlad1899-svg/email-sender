@@ -14,6 +14,7 @@ from pathlib import Path
 import environ
 import os
 from datetime import timedelta
+from celery.schedules import crontab
 
 
 
@@ -223,3 +224,10 @@ CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' #для тестов.чтобы пистьма не отправлялись а печатались в консоль
+
+CELERY_BEAT_SCHEDULE = {
+    "check-scheduled-campaigns-every-minute": {
+        "task": "email_sender.tasks.check_scheduled_campaigns",
+        "schedule": crontab(minute="*"),
+    },
+}
