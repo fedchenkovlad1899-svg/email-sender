@@ -38,6 +38,8 @@ from api.v1.views.campaigns import (
     CampaignCreateView,
     CampaignRetrieveView,
     CampaignUpdateView,
+    CampaignSendView,
+    CampaignCancelView,
     CampaignDeleteView
 )
 from api.v1.views.email_logs import (
@@ -81,6 +83,8 @@ urlpatterns = [
     path("campaigns/create/",CampaignCreateView.as_view(),name="campaign_create"),
     path("campaigns/<int:pk>/",CampaignRetrieveView.as_view(),name="campaign_detail"),
     path("campaigns/<int:pk>/update/",CampaignUpdateView.as_view(),name="campaign_update"),
+    path("campaigns/<int:pk>/send/",CampaignSendView.as_view(),name="campaign_send"),
+    path("campaigns/<int:pk>/cancel/",CampaignCancelView.as_view(),name="campaign_cancel"),
     path("campaigns/<int:pk>/delete/",CampaignDeleteView.as_view(),name="campaign_delete"),
     #logs
     path("logs/",EmailLogListView.as_view(),name="campaign_list"),

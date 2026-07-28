@@ -4,17 +4,8 @@ from email_sender.services.email_sender import send_campaign
 from django.utils import timezone
 
 
-#тестовое для проверки работоспособности
-# @shared_task
-# def test_celery_task():
-#     print("Celery работает!")
-#
-#     return "Celery task completed"
-
-
-
 @shared_task
-def send_campaign_task(campaign_id):
+def send_campaign_task(campaign_id:int)->dict:
     """
     фоновая отправка  рассылки
     """
@@ -55,7 +46,7 @@ def send_campaign_task(campaign_id):
 
 
 @shared_task
-def check_scheduled_campaigns():
+def check_scheduled_campaigns()->dict:
     """
     поиск рассылок по статусу ЗАПЛАНИРОВАНО и передача их в celery
     """

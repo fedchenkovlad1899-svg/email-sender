@@ -47,5 +47,5 @@ class ContactGroup(models.Model):
             ) #пользователь не создаст две обинаковых группы,но другой может созд с таким названием
         ]
 
-    def __str__(self):
+    def __str__(self)-> str:
         return self.title

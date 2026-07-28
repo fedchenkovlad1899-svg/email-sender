@@ -4,9 +4,11 @@ from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
 from openpyxl import load_workbook
 from email_sender.models import Contact
+from django.contrib.auth.models import User
+from email_sender.models import ContactGroup
 
 
-def import_contacts(file, owner, group=None):
+def import_contacts(file, owner:User, group:ContactGroup|None = None)->dict:
     """
     импорт контактов из CSV или XLSX файла.
     необходимые колонки: name, email, description
@@ -26,7 +28,7 @@ def import_contacts(file, owner, group=None):
     )
 
 
-def read_csv(file):
+def read_csv(file)-> list:
     """
     читает CSV и возвращает список строк
     """
@@ -38,7 +40,7 @@ def read_csv(file):
     return list(reader)
 
 
-def read_xlsx(file):
+def read_xlsx(file)-> list:
     """
     читает XLSX и возвращает список строк
     """
@@ -71,7 +73,7 @@ def read_xlsx(file):
     return result
 
 
-def validate_headers(headers):
+def validate_headers(headers:list|None) -> None:
     """
     проверка наличия обязательных колонок
     """
@@ -93,7 +95,7 @@ def validate_headers(headers):
         raise ValueError(f"отсутствуют обязательные колонки: {missing}")
 
 
-def create_contacts(rows, owner, group=None):
+def create_contacts(rows:list,owner:User,group:ContactGroup|None = None)->dict:
     """
     создание контакта из полученных строк
     """
@@ -170,7 +172,7 @@ def create_contacts(rows, owner, group=None):
 
 
 
-def get_cell_value(value):
+def get_cell_value(value)->str:
     """
     преобразование данных из ячейки в строку
     """

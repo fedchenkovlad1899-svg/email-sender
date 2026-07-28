@@ -92,5 +92,5 @@ class Campaign(models.Model):
             self.status = self.SendingStatus.COMPLETED_WITH_ERRORS
 
 
-    def __str__(self):
+    def __str__(self)-> str:
         return self.title

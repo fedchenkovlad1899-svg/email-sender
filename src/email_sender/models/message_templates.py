@@ -24,5 +24,5 @@ class MessageTemplate(models.Model):
 
         ordering = ["title"]
 
-    def __str__(self):
+    def __str__(self)-> str:
         return self.title

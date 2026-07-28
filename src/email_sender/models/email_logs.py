@@ -52,5 +52,5 @@ class EmailLog(models.Model):
         verbose_name_plural = "Истории отправки"
         ordering = ("-created_at",)
 
-    def __str__(self):
+    def __str__(self)-> str:
         return f"{self.contact.email} - {self.status}"

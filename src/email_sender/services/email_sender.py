@@ -4,7 +4,7 @@ from django.utils import timezone
 from email_sender.models import Campaign, EmailLog
 
 
-def send_campaign(campaign):
+def send_campaign(campaign: Campaign) -> dict:
     """
     Отправляет письма всем получателям выбранной рассылки
     Получатели могут быть выбраны:
