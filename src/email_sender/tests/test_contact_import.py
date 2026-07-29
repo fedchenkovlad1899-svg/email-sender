@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from django.urls import reverse                     #url по имени
 from openpyxl import Workbook                       #для созд exel ф-ла в памяти
 from rest_framework import status
-from rest_framework.test import APITestCase         #self.client.post/get...
+from rest_framework.test import APITestCase         #позволяет отправлять запросы self.client.post/get...
 from email_sender.models import Contact, ContactGroup
 
 
