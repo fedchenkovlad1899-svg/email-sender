@@ -84,4 +84,20 @@ class EmailSenderServiceTests(TestCase):
         self.assertEqual(self.campaign.sent_count, 1)
         self.assertEqual(self.campaign.failed_count, 0)
         mock_send_mail.assert_called_once()
-        self.assertEqual(EmailLog.objects.filter(campaign=self.campaign,contact=self.contact,).count(),1)#создан 1 лог,а не 2
+        self.assertEqual(EmailLog.objects.filter(campaign=self.campaign,contact=self.contact,).count(),1)#со здан 1 лог,а не 2
+
+
+
+    @patch("email_sender.services.email_sender.send_mail")
+    def test_send_campaign_with_error(self, mock_send_mail):
+        mock_send_mail.side_effect = Exception("Ошибка отправки")
+        send_campaign(self.campaign)
+        self.campaign.refresh_from_db()
+        self.assertEqual(self.campaign.total_count, 1)
+        self.assertEqual(self.campaign.sent_count, 0)
+        self.assertEqual(self.campaign.failed_count, 1)
+        self.assertEqual(self.campaign.status,Campaign.SendingStatus.FAILED)
+        log = EmailLog.objects.get(campaign=self.campaign,contact=self.contact)#проверяем что в лог записалась ошибка
+        self.assertEqual(log.status, EmailLog.Status.FAILED)
+        self.assertEqual(log.error_message, "Ошибка отправки")
+        self.assertIsNone(log.sent_at)

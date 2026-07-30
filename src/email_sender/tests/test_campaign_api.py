@@ -90,6 +90,19 @@ class CampaignApiTests(APITestCase):
 
 
 
+    def test_create_with_only_own_template(self):
+        url = reverse("campaign_create")
+        data = {
+            "title": "рассылка",
+            "template": self.other_template.id,
+            "contacts": [self.contact.id],
+        }
+        response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code,status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(Campaign.objects.count(), 0)
+
+
+
 
     def test_cancel_scheduled_campaign(self):
         campaign = Campaign.objects.create(
