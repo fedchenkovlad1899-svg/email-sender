@@ -23,7 +23,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AlterField(
             model_name='emaillog',
-            name='contact',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='email_logs', to='email_sender.contact', verbose_name='Контакт'),
+            name='contacts',
+            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='email_logs', to='email_sender.contacts', verbose_name='Контакт'),
         ),
     ]

@@ -35,7 +35,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='contactgroup',
             name='contacts',
-            field=models.ManyToManyField(blank=True, related_name='contact_groups', to='email_sender.contact', verbose_name='Контакты'),
+            field=models.ManyToManyField(blank=True, related_name='contact_groups', to='email_sender.contacts', verbose_name='Контакты'),
         ),
         migrations.AddField(
             model_name='contactgroup',

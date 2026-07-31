@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block title %}
+Контакты
+{% endblock %}
+{% block content %}
+
+<div class="container mt-4">
+    <h2 class="mb-3">Контакты</h2>
+
+    <div class="d-flex gap-2 mb-3">
+        <a href="{% url 'create_contact_page' %}" class="btn btn-primary">Добавить контакт</a>
+        <a href="{% url 'import_contact_page' %}" class="btn btn-primary">Импорт контактов</a>
+        <a href="{% url 'contact_group' %}" class="btn btn-primary">Группы контактов</a>
+    </div>
+
+    <div id="contact-error" class="alert alert-danger d-none"></div>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Имя</th>
+                <th>Email</th>
+                <th>Описание</th>
+                <th>Дата создания</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+
+        <tbody id="contact-list"></tbody>
+    </table>
+</div>
+
+
+
+<script>
+document.addEventListener("DOMContentLoaded", async function () {
+    const response = await fetch("/contacts/list/", {
+        headers: {
+            "Authorization": "Bearer " + localStorage.getItem("access")
+        }
+    });
+
+    if (!response.ok) {
+        document.getElementById("contact-error").textContent =
+            "Не удалось загрузить контакты";
+        document.getElementById("contact-error")
+            .classList.remove("d-none");
+        return;
+    }
+    const data = await response.json();
+    const contacts = data.results || data;
+    const contactList = document.getElementById("contact-list");
+
+    contacts.forEach(function (contact) {
+        contactList.innerHTML += `
+            <tr>
+                <td>${contact.name || ""}</td>
+                <td>${contact.email}</td>
+                <td>${contact.description || ""}</td>
+                <td>${new Date(contact.created_at).toLocaleString("ru-RU")}</td>
+                <td>
+                    <a href="/email_sender/contact/${contact.id}/update"class="btn btn-sm btn-primary">Изменить</a>
+                <button class="btn btn-sm btn-danger"onclick="deleteContact(${contact.id})">Удалить</button>
+                </td>
+            </tr>
+        `;
+    });
+});
+
+
+async function deleteContact(contactId) {
+    if (!confirm("Удалить контакт?")) {
+        return;
+    }
+    const response = await fetch(
+        `/contacts/${contactId}/delete/`,
+        {
+            method: "DELETE",
+            headers: {
+                "Authorization":
+                    "Bearer " + localStorage.getItem("access")
+            }
+        }
+    );
+    if (response.ok) {
+        window.location.reload();
+    } else {
+        alert("Не удалось удалить контакт");
+    }
+}
+</script>
+
+
+
+{% endblock %}
+
+
+

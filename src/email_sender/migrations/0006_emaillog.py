@@ -21,7 +21,7 @@ class Migration(migrations.Migration):
                 ('created_at', models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')),
                 ('updated_at', models.DateTimeField(auto_now=True, verbose_name='Дата обновления')),
                 ('campaign', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='email_logs', to='email_sender.campaign', verbose_name='Рассылка')),
-                ('contact', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='email_logs', to='email_sender.contact', verbose_name='Контакт')),
+                ('contacts', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='email_logs', to='email_sender.contacts', verbose_name='Контакт')),
             ],
             options={
                 'verbose_name': 'История отправки',

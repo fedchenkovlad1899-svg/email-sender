@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block title %}
+Группы контактов
+{% endblock %}
+{% block content %}
+
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <h3 class="mb-0">Группы контактов</h3>
+        </div>
+        <div class="card-body">
+            <a href="{% url 'create_contact_group' %}" class="btn btn-success mb-3">Создать группу</a>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Название</th>
+                        <th>Количество контактов</th>
+                        <th>Действия</th>
+                    </tr>
+                </thead>
+                <tbody id="group-list"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<script>
+document.addEventListener("DOMContentLoaded", async function () {
+    const response = await fetch("/groups/", {
+        headers: {
+            "Authorization": "Bearer " + localStorage.getItem("access")
+        }
+    });
+    if (!response.ok) {
+        document.getElementById("group-error").textContent = "Не удалось загрузить группы";
+        document.getElementById("group-error").classList.remove("d-none");
+        return;
+    }
+    const data = await response.json();
+    const groups = data.results || data;
+    const groupList = document.getElementById("group-list");
+    groups.forEach(function (group) {
+        groupList.innerHTML += `
+            <tr>
+                <td>${group.title}</td>
+                <td>${group.contacts.length}</td>
+                <td>
+                    <a href="/email_sender/contact/group/${group.id}/update"class="btn btn-sm btn-primary">Изменить</a>
+                    <button class="btn btn-sm btn-danger"onclick="deleteGroup(${group.id})">Удалить</button>
+                </td>
+            </tr>
+        `;
+    });
+});
+
+async function deleteGroup(groupId) {
+    if (!confirm("Удалить группу?")) {
+        return;
+    }
+    const response = await fetch(`/groups/${groupId}/delete/`,
+        {
+            method: "DELETE",
+            headers: {
+                "Authorization":
+                    "Bearer " + localStorage.getItem("access")
+            }
+        }
+    );
+    if (response.ok) {
+        window.location.reload();
+    } else {
+        alert("Не удалось удалить группу");
+    }
+}
+</script>
+
+{% endblock %}

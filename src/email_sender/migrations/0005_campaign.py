@@ -23,7 +23,7 @@ class Migration(migrations.Migration):
                 ('created_at', models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')),
                 ('updated_at', models.DateTimeField(auto_now=True, verbose_name='Дата обновления')),
                 ('contact_group', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='campaigns', to='email_sender.contactgroup', verbose_name='Группа контактов')),
-                ('contacts', models.ManyToManyField(blank=True, related_name='campaigns', to='email_sender.contact', verbose_name='Контакты')),
+                ('contacts', models.ManyToManyField(blank=True, related_name='campaigns', to='email_sender.contacts', verbose_name='Контакты')),
                 ('owner', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='campaigns', to=settings.AUTH_USER_MODEL, verbose_name='Владелец')),
                 ('template', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='campaigns', to='email_sender.messagetemplate', verbose_name='Шаблон')),
             ],

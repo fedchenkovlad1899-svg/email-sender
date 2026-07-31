@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% block title %}
+Импорт контактов
+{% endblock %}
+{% block content %}
+
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <h3 class="mb-0">Импорт контактов</h3>
+        </div>
+        <div class="card-body">
+            <div class="mb-3">
+                <label for="file" class="form-label">Файл CSV или XLSX</label>
+                <input
+                    id="file"
+                    type="file"
+                    class="form-control"
+                    accept=".csv,.xlsx"
+                >
+            </div>
+            <div class="mb-3">
+                <label for="group" class="form-label">Группа</label>
+                <select id="group" class="form-select">
+                    <option value="">Без группы</option>
+                </select>
+            </div>
+            <div
+                id="import-success"
+                class="alert alert-success d-none"
+            ></div>
+            <div
+                id="import-error"
+                class="alert alert-danger d-none"
+            ></div>
+            <button id="import-button" type="button" class="btn btn-success">Импортировать</button>
+            <a href="{% url 'contact' %}" class="btn btn-secondary">Отмена</a>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script>
+document.addEventListener("DOMContentLoaded", async function () {
+    const accessToken = localStorage.getItem("access");
+    const groupSelect = document.getElementById("group");
+    const errorElement = document.getElementById("import-error");
+    const response = await fetch("/groups/", {
+        headers: {
+            "Authorization": "Bearer " + accessToken
+        }
+    });
+    if (!response.ok) {
+        errorElement.textContent =
+            "Не удалось загрузить группы";
+        errorElement.classList.remove("d-none");
+        return;
+    }
+    const data = await response.json();
+    const groups = data.results || data;
+    groups.forEach(function (group) {
+        groupSelect.innerHTML += `
+            <option value="${group.id}">
+                ${group.title}
+            </option>
+        `;
+    });
+
+    document.getElementById("import-button")
+        .addEventListener("click", async function () {
+            const file = document.getElementById("file").files[0];
+            const groupId = groupSelect.value;
+            const successElement =
+                document.getElementById("import-success");
+            successElement.classList.add("d-none");
+            errorElement.classList.add("d-none");
+            if (!file) {
+                errorElement.textContent = "Выберите файл";
+                errorElement.classList.remove("d-none");
+                return;
+            }
+            const formData = new FormData();
+            formData.append("file", file);
+            if (groupId) {
+                formData.append("group_id", groupId);
+            }
+            const response = await fetch("/contacts/import/", {
+                method: "POST",
+                headers: {
+                    "Authorization": "Bearer " + accessToken
+                },
+                body: formData
+            });
+            const result = await response.json();
+            if (response.ok) {
+                successElement.textContent =
+                    `Импорт завершён. Добавлено контактов: ${result.created || 0}`;
+                successElement.classList.remove("d-none");
+            } else {
+                errorElement.textContent =
+                    result.detail || "Не удалось импортировать контакты";
+                errorElement.classList.remove("d-none");
+            }
+        });
+});
+</script>
+
+{% endblock %}

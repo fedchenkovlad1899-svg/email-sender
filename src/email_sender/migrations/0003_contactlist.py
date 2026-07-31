@@ -21,7 +21,7 @@ class Migration(migrations.Migration):
                 ('description', models.TextField(blank=True, verbose_name='Описание')),
                 ('created_at', models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')),
                 ('updated_at', models.DateTimeField(auto_now=True, verbose_name='Дата обновления')),
-                ('contacts', models.ManyToManyField(blank=True, related_name='contact_lists', to='email_sender.contact', verbose_name='Контакты')),
+                ('contacts', models.ManyToManyField(blank=True, related_name='contact_lists', to='email_sender.contacts', verbose_name='Контакты')),
                 ('owner', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='contact_lists', to=settings.AUTH_USER_MODEL, verbose_name='Владелец')),
             ],
             options={

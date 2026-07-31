@@ -11,7 +11,7 @@ class EmailLogSerializer(serializers.ModelSerializer):
         fields = (
             "id",
             "campaign",
-            "contact",
+            "contacts",
             "status",
             "error_message",
             "sent_at",
@@ -21,7 +21,7 @@ class EmailLogSerializer(serializers.ModelSerializer):
         read_only_fields = (
             "id",
             "campaign",
-            "contact",
+            "contacts",
             "status",
             "error_message",
             "sent_at",
