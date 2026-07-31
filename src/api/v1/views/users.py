@@ -1,7 +1,10 @@
 from rest_framework import generics,status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAdminUser,AllowAny
-from rest_framework.generics import ListAPIView
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.generics import ListAPIView,RetrieveUpdateAPIView
+from rest_framework.views import APIView
+from rest_framework_simplejwt.tokens import RefreshToken
 from users.models import User
 from drf_spectacular.utils import extend_schema
 from api.v1.serializers import (
@@ -48,6 +51,7 @@ class ProfileView(generics.RetrieveUpdateAPIView):
     Просмотр и изменение профиля пользователя
     """
     serializer_class = UserSerializer
+    authentication_classes = [JWTAuthentication]  #чтобы работало без авторизированной админки по JWT
     permission_classes = [IsAuthenticated]
 
     def get_object(self):
@@ -61,6 +65,7 @@ class LogoutView(generics.GenericAPIView):
     Выход пользователя
     """
     serializer_class = LogoutSerializer
+    authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
 
     def post(self, request, *args, **kwargs):

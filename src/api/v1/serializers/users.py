@@ -64,21 +64,31 @@ class UserSerializer(serializers.ModelSerializer):
     """
     Профиль пользователя
     """
+    role = serializers.SerializerMethodField()
     class Meta:
         model = User
         fields = (
             "id",
             "username",
             "email",
-            "role",
+            "first_name",
+            "last_name",
             "is_active",
+            "role",
             "date_joined"
         )
         read_only_fields = (
             "id",
-            "email",
+            "username",
             "date_joined",
+            "is_active",
+            "role",
         )
+
+    def get_role(self, user):
+        if user.is_superuser:
+            return "Администратор"
+        return "Пользователь"
 
 @extend_schema_serializer(component_name="User_LogoutSerializer")
 class LogoutSerializer(serializers.Serializer):

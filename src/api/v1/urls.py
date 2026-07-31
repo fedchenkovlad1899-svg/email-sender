@@ -1,4 +1,5 @@
 from django.urls import path
+from rest_framework_simplejwt.views import TokenRefreshView
 from api.v1.views.users import (
     RegisterView,
     LoginView,
@@ -89,6 +90,8 @@ urlpatterns = [
     #logs
     path("logs/",EmailLogListView.as_view(),name="campaign_list"),
     path("logs/<int:pk>/",EmailLogRetrieveView.as_view(),name="campaign_detail"),
+    #refresh_token
+    path("token/refresh/",TokenRefreshView.as_view(),name="token_refresh"),
 
 
 ]

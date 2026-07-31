@@ -84,7 +84,7 @@ class EmailSenderServiceTests(TestCase):
         self.assertEqual(self.campaign.sent_count, 1)
         self.assertEqual(self.campaign.failed_count, 0)
         mock_send_mail.assert_called_once()
-        self.assertEqual(EmailLog.objects.filter(campaign=self.campaign,contact=self.contact,).count(),1)#со здан 1 лог,а не 2
+        self.assertEqual(EmailLog.objects.filter(campaign=self.campaign,contact=self.contact,).count(),1)# создан 1 лог,а не 2
 
 
 

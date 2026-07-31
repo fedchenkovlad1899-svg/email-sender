@@ -12,5 +12,37 @@
 <div class="container mt-4">
 
 {% block content %} {% endblock %}
+
+
+<script>
+    async function getNewAccessToken() {
+        const refreshToken = localStorage.getItem("refresh");
+
+        if (!refreshToken) {
+            return null;
+        }
+
+        const response = await fetch("/token/refresh/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                refresh: refreshToken
+            })
+        });
+
+        if (!response.ok) {
+            localStorage.removeItem("access");
+            localStorage.removeItem("refresh");
+
+            return null;
+        }
+
+        const data = await response.json();
+        localStorage.setItem("access", data.access);
+        return data.access;
+    }
+</script>
 </body>
 </html>

@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% block title %}
+Редактирование профиля
+{% endblock %}
+{% block content %}
+
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <h3>Редактирование профиля</h3>
+        </div>
+
+        <div class="card-body">
+            <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input
+                    id="email"
+                    type="email"
+                    class="form-control"
+                >
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Имя</label>
+                <input
+                    id="first_name"
+                    class="form-control"
+                >
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Фамилия</label>
+                <input
+                    id="last_name"
+                    class="form-control"
+                >
+            </div>
+
+            <div
+                id="message"
+                class="alert d-none"
+            ></div>
+
+            <button id="save-button" class="btn btn-success">Сохранить</button>
+            <a href="{% url 'profile_page' %}" class="btn btn-secondary">Отмена</a>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+document.addEventListener("DOMContentLoaded", async function () {
+    const accessToken = localStorage.getItem("access");
+
+    if (!accessToken) {
+        window.location.href = "{% url 'login_page' %}";
+        return;
+    }
+    const response = await fetch("/profile/", {
+        headers: {"Authorization": "Bearer " + accessToken}
+    });
+
+    if (!response.ok) {
+        alert("Не удалось получить профиль");
+        return;
+    }
+    const user = await response.json();
+    document.getElementById("email").value = user.email;
+    document.getElementById("first_name").value = user.first_name;
+    document.getElementById("last_name").value = user.last_name;
+
+
+
+    document.getElementById("save-button").addEventListener("click", async function () {
+    const accessToken = localStorage.getItem("access");
+    const response = await fetch("/profile/", {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + accessToken
+        },
+        body: JSON.stringify({
+            email: document.getElementById("email").value,
+            first_name: document.getElementById("first_name").value,
+            last_name: document.getElementById("last_name").value
+        })
+    });
+
+    const message = document.getElementById("message");
+    if (response.ok) {
+        message.className = "alert alert-success";
+        message.textContent = "Профиль обновлен";
+        setTimeout(function () {
+            window.location.href = "{% url 'profile_page' %}";
+        }, 1000);
+    } else {
+        message.className = "alert alert-danger";
+        message.textContent = "Ошибка сохранения";
+    }
+});
+});
+</script>
+
+{% endblock %}

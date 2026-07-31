@@ -26,3 +26,13 @@ def login_page(request):
 
 def register_page(request):
     return render(request, "register.html")
+
+
+def profile_page(request):
+    return render(request, "profile.html")
+
+def profile_update(request):
+    return render(request,"profile_update.html")
+
+def change_password_page(request):
+    return render(request, "change_password_page.html")
