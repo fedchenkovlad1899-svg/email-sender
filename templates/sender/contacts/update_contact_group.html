@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 {% block title %}
 Создание группы
 {% endblock %}
@@ -10,6 +11,11 @@
             <h3 class="mb-0">Изменение группы контактов</h3>
         </div>
         <div class="card-body">
+            <input
+                id="group-id"
+                type="hidden"
+                value="{{ group_id }}"
+            >
             <div class="mb-3">
                 <label class="form-label">Название</label>
                 <input
@@ -42,104 +48,7 @@
 
 
 
-<script>
-document.addEventListener("DOMContentLoaded", async function () {
 
-    const groupId = "{{ group_id }}";
-    const accessToken = localStorage.getItem("access");
-    const errorElement = document.getElementById("group-error");
-
-    const groupResponse = await fetch(`/groups/${groupId}/`, {
-        headers: {
-            "Authorization": "Bearer " + accessToken
-        }
-    });
-
-    const contactsResponse = await fetch("/contacts/list/", {
-        headers: {
-            "Authorization": "Bearer " + accessToken
-        }
-    });
-
-    if (!groupResponse.ok || !contactsResponse.ok) {
-        errorElement.textContent = "Не удалось загрузить данные";
-        errorElement.classList.remove("d-none");
-        return;
-    }
-
-    const group = await groupResponse.json();
-    const contactsData = await contactsResponse.json();
-    const contacts = contactsData.results || contactsData;
-
-    document.getElementById("title").value = group.title || "";
-    document.getElementById("description").value =
-        group.description || "";
-
-    const contactList = document.getElementById("contact-list");
-
-    contacts.forEach(function (contact) {
-        const checked = group.contacts.includes(contact.id)
-            ? "checked"
-            : "";
-
-        contactList.innerHTML += `
-            <div class="form-check">
-                <input
-                    class="form-check-input contact-checkbox"
-                    type="checkbox"
-                    value="${contact.id}"
-                    id="contact-${contact.id}"
-                    ${checked}
-                >
-
-                <label
-                    class="form-check-label"
-                    for="contact-${contact.id}"
-                >
-                    ${contact.name || "Без имени"} — ${contact.email}
-                </label>
-            </div>
-        `;
-    });
-
-    document.getElementById("save-button")
-        .addEventListener("click", async function () {
-
-            const selectedContacts = [];
-
-            document.querySelectorAll(
-                ".contact-checkbox:checked"
-            ).forEach(function (checkbox) {
-                selectedContacts.push(Number(checkbox.value));
-            });
-
-            const response = await fetch(
-                `/groups/${groupId}/update/`,
-                {
-                    method: "PATCH",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": "Bearer " + accessToken
-                    },
-                    body: JSON.stringify({
-                        title: document.getElementById("title").value,
-                        description:
-                            document.getElementById("description").value,
-                        contacts: selectedContacts
-                    })
-                }
-            );
-
-            if (response.ok) {
-                window.location.href = "{% url 'contact_group' %}";
-            } else {
-                errorElement.textContent =
-                    "Не удалось изменить группу";
-
-                errorElement.classList.remove("d-none");
-            }
-        });
-});
-</script>
+<script src="{% static 'js/contact/update_contact_group.js' %}"></script>
 
 {% endblock %}

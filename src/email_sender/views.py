@@ -54,7 +54,13 @@ def update_contact_group(request, pk):
 
 
 def campaign(request):
-    return render(request, "campaign.html")
+    return render(request, "campaigns/campaign.html")
+
+def create_campaign(request):
+    return render(request,"campaigns/create_campaign.html")
+
+def update_campaign(request, pk):
+    return render(request,"campaigns/update_campaign.html",{"campaign_id": pk})
 
 
 
@@ -63,9 +69,15 @@ def campaign(request):
 
 
 
-
+#message
 def message_template(request):
-    return render(request, "message_template.html")
+    return render(request, "messages/message_template.html")
+
+def create_message_template(request):
+    return render(request, "messages/create_message_template.html")
+
+def update_message_template(request, pk):
+    return render(request,"messages/update_message_template.html",{"template_id": pk})
 
 
 

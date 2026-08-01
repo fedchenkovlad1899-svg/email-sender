@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+Изменение рассылки
+{% endblock %}
+{% block content %}
+
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <h3 class="mb-0">Изменение рассылки</h3>
+        </div>
+        <div class="card-body">
+            <input
+                id="campaign-id"
+                type="hidden"
+                value="{{ campaign_id }}"
+            >
+            <div class="mb-3">
+                <label for="title" class="form-label">Название</label>
+                <input
+                    id="title"
+                    type="text"
+                    class="form-control"
+                >
+            </div>
+            <div class="mb-3">
+                <label for="template" class="form-label">Шаблон письма</label>
+                <select id="template" class="form-select">
+                    <option value="">Выберите шаблон</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="contact-group" class="form-label">Группа контактов</label>
+                <select id="contact-group" class="form-select">
+                    <option value="">Без группы</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Отдельные контакты</label>
+                <div id="contact-list"></div>
+            </div>
+
+            <div class="mb-3">
+                <label for="scheduled-at" class="form-label">Дата и время отправки</label>
+                <input
+                    id="scheduled-at"
+                    type="datetime-local"
+                    class="form-control"
+                >
+            </div>
+
+            <div
+                id="campaign-error"
+                class="alert alert-danger d-none"
+            ></div>
+            <button id="save-button" type="button" class="btn btn-success">Сохранить</button>
+            <a href="{% url 'campaign' %}" class="btn btn-secondary">Отмена</a>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'js/campaign/campaign_update.js' %}"></script>
+
+{% endblock %}

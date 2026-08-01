@@ -88,8 +88,8 @@ urlpatterns = [
     path("campaigns/<int:pk>/cancel/",CampaignCancelView.as_view(),name="campaign_cancel"),
     path("campaigns/<int:pk>/delete/",CampaignDeleteView.as_view(),name="campaign_delete"),
     #logs
-    path("logs/",EmailLogListView.as_view(),name="campaign_list"),
-    path("logs/<int:pk>/",EmailLogRetrieveView.as_view(),name="campaign_detail"),
+    path("logs/",EmailLogListView.as_view(),name="campaign_log_list"),
+    path("logs/<int:pk>/",EmailLogRetrieveView.as_view(),name="campaign_log_detail"),
     #refresh_token
     path("token/refresh/",TokenRefreshView.as_view(),name="token_refresh"),
 
