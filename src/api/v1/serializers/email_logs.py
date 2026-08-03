@@ -6,12 +6,17 @@ class EmailLogSerializer(serializers.ModelSerializer):
     """
     Логи отправки писем
     """
+    campaign_title = serializers.CharField(source="campaign.title",read_only=True)
+    contact_email = serializers.EmailField(source="contact.email",read_only=True)
+
     class Meta:
         model = EmailLog
         fields = (
             "id",
             "campaign",
-            "contacts",
+            "campaign_title",
+            "contact",
+            "contact_email",
             "status",
             "error_message",
             "sent_at",
@@ -21,7 +26,9 @@ class EmailLogSerializer(serializers.ModelSerializer):
         read_only_fields = (
             "id",
             "campaign",
-            "contacts",
+            "campaign_title",
+            "contact",
+            "contact_email",
             "status",
             "error_message",
             "sent_at",

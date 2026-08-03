@@ -173,4 +173,10 @@ class CampaignDeleteView(generics.DestroyAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        return Campaign.objects.filter(owner=self.request.user)
+        return Campaign.objects.filter(
+            owner=self.request.user,
+            status__in=(
+                Campaign.SendingStatus.DRAFT,
+                Campaign.SendingStatus.CANCELED,
+            )
+        )

@@ -33,6 +33,11 @@ async function loadCampaigns() {
         const canCancel =
             campaign.status === "scheduled";
 
+         const canDelete = [
+            "draft",
+            "canceled"
+        ].includes(campaign.status);
+
         campaignList.innerHTML += `
             <tr>
                 <td>${campaign.title}</td>
@@ -89,14 +94,19 @@ async function loadCampaigns() {
                             `
                             : ""
                     }
-
-                    <button
-                        type="button"
-                        class="btn btn-sm btn-danger"
-                        onclick="deleteCampaign(${campaign.id})"
-                    >
-                        Удалить
-                    </button>
+                   ${
+                        canDelete
+                            ? `
+                                <button
+                                    type="button"
+                                    class="btn btn-sm btn-danger"
+                                    onclick="deleteCampaign(${campaign.id})"
+                                >
+                                    Удалить
+                                </button>
+                            `
+                            : ""
+                    }
                 </td>
             </tr>
         `;

@@ -80,6 +80,11 @@ document.addEventListener("DOMContentLoaded", function() {
                     user.email ||
                     "Пользователь";
             }
+            if (user.role === "Администратор") {
+                document.querySelectorAll(".admin-link").forEach(function (element) {
+                    element.classList.remove("d-none");
+                });
+            }
 
         } catch (error) {
             console.error(
