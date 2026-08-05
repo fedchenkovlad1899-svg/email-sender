@@ -45,6 +45,8 @@ class CampaignSerializer(serializers.ModelSerializer):
         """
         Проверка принадлежности группы контактов пользователю
         """
+        if value is None:
+            return value
         request = self.context["request"]
         if value.owner != request.user:
             raise serializers.ValidationError("Вы не можете использовать чужую группу контактов")

@@ -21,10 +21,24 @@ from api.v1.serializers import (
 @extend_schema(tags=['User'])
 class RegisterView(generics.CreateAPIView):
     """
-    Регистрация пользователя
+    Регистрация пользователя и автологин
     """
     serializer_class = RegisterSerializer
     permission_classes = [AllowAny]
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+        refresh = RefreshToken.for_user(user)
+        return Response(
+            {
+                "access": str(refresh.access_token),
+                "refresh": str(refresh),
+                "user": UserSerializer(user).data,
+            },
+            status=status.HTTP_201_CREATED,
+        )
 
 
 

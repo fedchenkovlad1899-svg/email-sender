@@ -54,10 +54,13 @@ const csrftoken = getCookie("csrftoken");
         const message = document.getElementById("message");
 
         if (response.ok) {
+            localStorage.setItem("access", data.access);
+            localStorage.setItem("refresh", data.refresh);
             message.innerHTML =
                 '<div class="alert alert-success">Регистрация прошла успешно</div>';
 
             form.reset();
+            window.location.href = "/email_sender/home/";
         } else {
             message.innerHTML =
                 '<div class="alert alert-danger">' +
