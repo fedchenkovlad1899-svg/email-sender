@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+Регистрация
+{% endblock %}
+
+{% block content %}
+
+<h2>Регистрация</h2>
+<form id="registerForm">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label class="form-label">Имя пользователя</label>
+        <input
+            type="text"
+            id="username"
+            class="form-control"
+            placeholder="Введите имя"
+            required
+        >
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Email</label>
+        <input
+            type="email"
+            id="email"
+            class="form-control"
+            placeholder="Введите email"
+            required
+        >
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Пароль</label>
+        <input
+            type="password"
+            id="password"
+            class="form-control"
+            placeholder="Введите пароль"
+            required
+            minlength="8"
+        >
+    </div>
+
+    <div id="message" class="mb-3"></div>
+
+    <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+</form>
+
+
+
+<script src="{% static 'js/user/register.js' %}"></script>
+
+{% endblock %}

@@ -14,6 +14,8 @@ from pathlib import Path
 import environ
 import os
 from datetime import timedelta
+from celery.schedules import crontab
+
 
 
 
@@ -56,6 +58,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'rest_framework_simplejwt',
+    'drf_spectacular',
+    'drf_spectacular_sidecar',
+    'rest_framework_simplejwt.token_blacklist',
+    'django_filters',
+
+    #applications
+    'email_sender',
+    'users.apps.UsersConfig'
 ]
 
 MIDDLEWARE = [
@@ -73,7 +85,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [(os.path.join(BASE_DIR.parent, 'templates/sender'))],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -92,12 +104,21 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": env("PG_NAME"),
+        "USER": env("PG_USER"),
+        "PASSWORD": env("PG_PASS"),
+        "HOST": env("PG_HOST"),
+        "PORT": env("PG_PORT"),
+
+        # "TEST": {
+        #     'NAME': "test_email_sender",
+        # }
+
     }
 }
-
+AUTH_USER_MODEL = "users.User"
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
@@ -134,3 +155,83 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATICFILES_DIRS = [
+    BASE_DIR.parent / "static",
+]
+
+
+# rest framework
+REST_FRAMEWORK = {
+    # YOUR SETTINGS
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        # 'rest_framework.authentication.BasicAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        #'rest_framework.authentication.TokenAuthentication',
+
+    ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 20,
+    'DEFAULT_FILTER_BACKENDS': [
+        "django_filters.rest_framework.DjangoFilterBackend",
+        "rest_framework.filters.SearchFilter",
+        "rest_framework.filters.OrderingFilter",
+    ],
+}
+
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Mail Sender API',
+    'DESCRIPTION': ' API проекта по автоматизации email-рассылок',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    'COMPONENT_SPLIT_REQUEST': True,#выбор файладля импорта контактов
+    # OTHER SETTINGS
+}
+
+
+
+# jwt
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(
+        minutes=int(env("ACCESS_TOKEN_LIFETIME_MINUTES"))
+    ),
+    "REFRESH_TOKEN_LIFETIME": timedelta(
+        minutes=int(env('REFRESH_TOKEN_LIFETIME_MINUTES'))
+    ),
+
+    "ALGORITHM": env("JWT_ALGORITHM"),
+    "SIGNING_KEY": env("SECRET_KEY"),
+    "AUTH_HEADER_TYPES": ("Bearer",),
+}
+
+#gmail
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = env("EMAIL_HOST")
+EMAIL_PORT = env.int("EMAIL_PORT")
+EMAIL_USE_TLS = env.bool("EMAIL_USE_TLS")
+EMAIL_HOST_USER = env("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
+DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL")
+
+
+#  CELERY
+CELERY_TIMEZONE = TIME_ZONE   #такой же что настроен у django
+CELERY_BROKER_URL = env("CELERY_BROKER_URL",default="redis://127.0.0.1:6379/0")  #чз env  для doker-а
+CELERY_RESULT_BACKEND = env("CELERY_RESULT_BACKEND",default="redis://127.0.0.1:6379/1")
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' #для тестов.чтобы пистьма не отправлялись а печатались в консоль
+
+CELERY_BEAT_SCHEDULE = {
+    "check-scheduled-campaigns-every-minute": {
+        "task": "email_sender.tasks.check_scheduled_campaigns",
+        "schedule": crontab(minute="*"),
+    },
+}

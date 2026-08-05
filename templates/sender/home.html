@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}
+
+Главная
+
+{% endblock %}
+{% block content %}
+
+<div class="p-5 bg-white rounded shadow">
+    <h1 class="display-5 fw-bold">
+        Сервис email-рассылок
+    </h1>
+    <p class="lead mt-3">
+        Загружайте контакты, создавайте письма
+        и отправляйте рассылки в удобное время
+    </p>
+    <a href="{% url 'campaign' %}" class="btn btn-primary btn-lg mt-3">Перейти к рассылкам</a>
+</div>
+
+<div class="row mt-4">
+    <div class="col">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">1.Контакты</h5>
+                <p class="card-text">
+                    Добавляйте контакты вручную
+                    или загружайте их из файла
+                </p>
+                <a href="{% url 'contact' %}" class="btn btn-outline-primary">Открыть контакты</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">2.Шаблоны писем</h5>
+                <p class="card-text">
+                    Создавайте тему и текст письма
+                    для будущих рассылок
+                </p>
+                <a href="{% url 'message_template' %}" class="btn btn-outline-primary">Открыть шаблоны</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">3.Рассылки</h5>
+                <p class="card-text">
+                    Отправляйте письма сразу
+                    или назначайте дату отправки
+                </p>
+                <a href="{% url 'campaign' %}" class="btn btn-outline-primary">Открыть рассылки</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+

@@ -1,0 +1,76 @@
+services:
+
+  db:
+    image: postgres:18
+    environment:
+      POSTGRES_DB: ${PG_NAME}
+      POSTGRES_USER: ${PG_USER}
+      POSTGRES_PASSWORD: ${PG_PASS}
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql
+
+
+  redis:
+    image: redis:7
+    ports:
+      - "6379:6379"
+
+
+  web:
+    build: .
+    command: python src/manage.py runserver 0.0.0.0:8000
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    environment:
+      PG_HOST: db
+      PG_PORT: 5432
+      CELERY_BROKER_URL: redis://redis:6379/0
+      CELERY_RESULT_BACKEND: redis://redis:6379/1
+    depends_on:
+      - db
+      - redis
+
+
+  worker:
+    build: .
+    command: celery -A config worker -l info
+    working_dir: /app/src
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    environment:
+      PG_HOST: db
+      PG_PORT: 5432
+      CELERY_BROKER_URL: redis://redis:6379/0
+      CELERY_RESULT_BACKEND: redis://redis:6379/1
+    depends_on:
+      - db
+      - redis
+
+
+  beat:
+    build: .
+    command: celery -A config beat -l info
+    working_dir: /app/src
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    environment:
+      PG_HOST: db
+      PG_PORT: 5432
+      CELERY_BROKER_URL: redis://redis:6379/0
+      CELERY_RESULT_BACKEND: redis://redis:6379/1
+    depends_on:
+      - db
+      - redis
+
+volumes:
+  postgres_data:

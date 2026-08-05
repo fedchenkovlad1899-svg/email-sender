@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+Создание группы
+{% endblock %}
+{% block content %}
+
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <h3 class="mb-0">Изменение группы контактов</h3>
+        </div>
+        <div class="card-body">
+            <input
+                id="group-id"
+                type="hidden"
+                value="{{ group_id }}"
+            >
+            <div class="mb-3">
+                <label class="form-label">Название</label>
+                <input
+                    id="title"
+                    type="text"
+                    class="form-control"
+                >
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Описание</label>
+                <textarea
+                    id="description"
+                    class="form-control"
+                    rows="3"
+                ></textarea>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Контакты</label>
+                <div id="contact-list"></div>
+            </div>
+            <div
+                id="group-error"
+                class="alert alert-danger d-none"
+            ></div>
+            <button id="save-button" type="button" class="btn btn-success">Сохранить</button>
+            <a href="{% url 'contact_group' %}" class="btn btn-secondary">Отмена</a>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script src="{% static 'js/contact/update_contact_group.js' %}"></script>
+
+{% endblock %}

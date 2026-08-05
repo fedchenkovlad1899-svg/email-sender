@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+Редактирование профиля
+{% endblock %}
+{% block content %}
+
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <h3>Редактирование профиля</h3>
+        </div>
+
+        <div class="card-body">
+            <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input
+                    id="email"
+                    type="email"
+                    class="form-control"
+                >
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Имя</label>
+                <input
+                    id="first_name"
+                    class="form-control"
+                >
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Фамилия</label>
+                <input
+                    id="last_name"
+                    class="form-control"
+                >
+            </div>
+
+            <div
+                id="message"
+                class="alert d-none"
+            ></div>
+
+            <button id="save-button" class="btn btn-success">Сохранить</button>
+            <a href="{% url 'profile_page' %}" class="btn btn-secondary">Отмена</a>
+        </div>
+    </div>
+</div>
+
+
+<script src="{% static 'js/user/profile_update.js' %}"></script>
+{% endblock %}

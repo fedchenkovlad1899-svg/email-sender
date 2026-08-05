@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+Рассылки
+{% endblock %}
+{% block content %}
+
+<div class="container mt-4">
+    <h2 class="mb-3">Рассылки</h2>
+    <div class="mb-3">
+        <a href="{% url 'create_campaign' %}" class="btn btn-primary">Создать рассылку</a>
+    </div>
+    <div id="campaign-error" class="alert alert-danger d-none"></div>
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>Название</th>
+                <th>Статус</th>
+                <th>Запланировано</th>
+                <th>Отправлено</th>
+                <th>Ошибок</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody id="campaign-list"></tbody>
+    </table>
+</div>
+
+<script src="{% static 'js/campaign/campaign_list.js' %}"></script>
+
+{% endblock %}
