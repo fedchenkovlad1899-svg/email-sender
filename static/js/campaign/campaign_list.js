@@ -1,9 +1,63 @@
-document.addEventListener("DOMContentLoaded", loadCampaigns);
-async function loadCampaigns() {
-    const response = await fetch("/campaigns/", {
+const token = localStorage.getItem("access");
+
+let previousUrl = null;
+let nextUrl = null;
+let currentPage = 1;
+
+document.addEventListener("DOMContentLoaded", function (){loadCampaigns("/campaigns/?ordering=-created_at");
+document.getElementById("search-button")
+        .addEventListener("click", function () {
+            currentPage = 1;
+            loadFilteredCampaigns();
+        });
+
+
+    document.getElementById("reset-button").addEventListener("click", function () {
+            document.getElementById("search-input").value = "";
+            document.getElementById("status-filter").value = "";
+            document.getElementById("ordering").value = "-created_at";
+            currentPage = 1;
+            loadCampaigns("/campaigns/?ordering=-created_at");
+        });
+
+    document.getElementById("previous-button").addEventListener("click", function () {
+            if (previousUrl) {
+                currentPage--;
+                loadCampaigns(previousUrl);
+            }
+        });
+
+    document.getElementById("next-button").addEventListener("click", function () {
+            if (nextUrl) {
+                currentPage++;
+                loadCampaigns(nextUrl);
+            }
+        });
+});
+
+
+
+function loadFilteredCampaigns() {
+    const search = document.getElementById("search-input").value.trim();
+    const status = document.getElementById("status-filter").value;
+    const ordering = document.getElementById("ordering").value;
+    const params = new URLSearchParams();
+    if (search) {
+        params.append("search", search);
+    }
+    if (status) {
+        params.append("status", status);
+    }
+    if (ordering) {
+        params.append("ordering", ordering);
+    }
+    loadCampaigns("/campaigns/?" + params.toString());
+}
+async function loadCampaigns(url) {
+    const response = await fetch(url, {
         headers: {
             "Authorization":
-                "Bearer " + localStorage.getItem("access")
+                "Bearer " + token
         }
     });
 
@@ -14,6 +68,8 @@ async function loadCampaigns() {
 
     const data = await response.json();
     const campaigns = data.results || data;
+    previousUrl = data.previous || null;
+    nextUrl = data.next || null;
     const campaignList = document.getElementById("campaign-list");
 
     campaignList.innerHTML = "";
@@ -111,6 +167,21 @@ async function loadCampaigns() {
             </tr>
         `;
     });
+    if (campaigns.length === 0) {
+        campaignList.innerHTML = `
+            <tr>
+                <td colspan="6" class="text-center">
+                    Рассылки не найдены
+                </td>
+            </tr>
+        `;
+    }
+    document.getElementById("previous-button").disabled = !previousUrl;
+    document.getElementById("next-button").disabled = !nextUrl;
+    const total = data.count ?? campaigns.length;
+    const totalPages = Math.max(1, Math.ceil(total / 20));
+    document.getElementById("page-info").textContent = `Страница ${currentPage} из ${totalPages}`;
+
 }
 
 
