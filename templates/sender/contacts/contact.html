@@ -15,6 +15,26 @@
     </div>
 
     <div id="contact-error" class="alert alert-danger d-none"></div>
+    <div class="row mb-3">
+    <div class="col-md-6">
+        <input id="search-input" type="text" class="form-control" placeholder="Поиск по имени, email или описанию">
+    </div>
+
+    <div class="col-md-3">
+        <select id="ordering" class="form-select">
+            <option value="name">Имя А–Я</option>
+            <option value="-name">Имя Я–А</option>
+            <option value="-created_at">Сначала новые</option>
+            <option value="created_at">Сначала старые</option>
+        </select>
+    </div>
+
+    <div class="col-md-3">
+        <button id="search-button" type="button" class="btn btn-primary">Найти</button>
+        <button id="reset-button" type="button" class="btn btn-secondary">Сбросить</button>
+    </div>
+
+</div>
 
     <table class="table table-bordered">
         <thead>
@@ -29,6 +49,11 @@
 
         <tbody id="contact-list"></tbody>
     </table>
+    <div class="d-flex justify-content-between mt-3">
+    <button id="previous-button" type="button" class="btn btn-secondary" disabled>Назад</button>
+    <span id="page-info" class="align-self-center"></span>
+    <button id="next-button" type="button" class="btn btn-secondary" disabled>Вперёд</button>
+    </div>
 </div>
 
 
