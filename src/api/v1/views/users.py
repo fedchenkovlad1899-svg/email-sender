@@ -17,7 +17,6 @@ from api.v1.serializers import (
 )
 
 
-#POST /register/
 @extend_schema(tags=['User'])
 class RegisterView(generics.CreateAPIView):
     """
@@ -42,7 +41,6 @@ class RegisterView(generics.CreateAPIView):
 
 
 
-#POST /login/
 @extend_schema(tags=['User'])
 class LoginView(generics.GenericAPIView):
     """
@@ -58,7 +56,6 @@ class LoginView(generics.GenericAPIView):
 
 
 
-#GET/PUT/PATCH  /profile/
 @extend_schema(tags=['User'])
 class ProfileView(generics.RetrieveUpdateAPIView):
     """
@@ -72,7 +69,6 @@ class ProfileView(generics.RetrieveUpdateAPIView):
         return self.request.user
 
 
-#POST /logout/
 @extend_schema(tags=['User'])
 class LogoutView(generics.GenericAPIView):
     """
@@ -88,7 +84,7 @@ class LogoutView(generics.GenericAPIView):
         serializer.save()
         return Response({"detail": "Вы вышли из системы."},status=status.HTTP_205_RESET_CONTENT)
 
-#POST /change_password/
+
 @extend_schema(tags=['User'])
 class ChangePasswordView(generics.GenericAPIView):
     """
@@ -108,7 +104,7 @@ class ChangePasswordView(generics.GenericAPIView):
 
 #для админа
 
-#GET /profiles/
+
 @extend_schema(tags=['Admin_only'])
 class UserListView(generics.ListAPIView):
     """
@@ -118,7 +114,6 @@ class UserListView(generics.ListAPIView):
     serializer_class = UserSerializer
     permission_classes = [IsAdminUser]
 
-#GET /users/{id}/
 @extend_schema(tags=['Admin_only'])
 class UserDetailView(generics.RetrieveAPIView):
     """
@@ -128,7 +123,7 @@ class UserDetailView(generics.RetrieveAPIView):
     serializer_class = UserSerializer
     permission_classes = [IsAdminUser]
 
-#PUT/PATCH /users/{id}/status
+
 @extend_schema(tags=['Admin_only'])
 class UserStatusView(generics.UpdateAPIView):
     """
@@ -138,7 +133,7 @@ class UserStatusView(generics.UpdateAPIView):
     serializer_class = UserStatusSerializer
     permission_classes = [IsAdminUser]
 
-#DELETE  /users/{id}/delete
+
 @extend_schema(
     tags=['Admin_only'],
     request=None,          #чтобы убрать ошибку.тк не задаем сериалайзер

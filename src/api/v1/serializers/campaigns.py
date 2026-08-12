@@ -75,18 +75,18 @@ class CampaignSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         """
-        создание рассылки.Если указано время отправки,
+        Создание рассылки. Если указано время отправки,
         рассылка сразу становится запланированной
         """
         if validated_data.get("scheduled_at"):
-            validated_data["status"] = (Campaign.SendingStatus.SCHEDULED)
+            validated_data["status"] = Campaign.SendingStatus.SCHEDULED
         return super().create(validated_data)
 
 
 
     def update(self, instance, validated_data):
         """
-        изменение статуса в зависимости от scheduled_at
+        Изменение статуса в зависимости от scheduled_at
         """
         scheduled_at = validated_data.get("scheduled_at",instance.scheduled_at)
         editable_statuses = (
@@ -96,7 +96,7 @@ class CampaignSerializer(serializers.ModelSerializer):
 
         if instance.status in editable_statuses:
             if scheduled_at:
-                validated_data["status"] = (Campaign.SendingStatus.SCHEDULED)
+                validated_data["status"] = Campaign.SendingStatus.SCHEDULED
             else:
-                validated_data["status"] = (Campaign.SendingStatus.DRAFT)
+                validated_data["status"] = Campaign.SendingStatus.DRAFT
         return super().update(instance,validated_data)

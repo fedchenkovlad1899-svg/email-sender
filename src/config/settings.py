@@ -144,7 +144,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Minsk'
 
 USE_I18N = True
 
@@ -215,6 +215,7 @@ EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = env("EMAIL_HOST")
 EMAIL_PORT = env.int("EMAIL_PORT")
 EMAIL_USE_TLS = env.bool("EMAIL_USE_TLS")
+EMAIL_USE_SSL = env.bool("EMAIL_USE_SSL")  #для mail.ru(для gmail надо убрать)
 EMAIL_HOST_USER = env("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
 DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL")
@@ -227,7 +228,7 @@ CELERY_RESULT_BACKEND = env("CELERY_RESULT_BACKEND",default="redis://127.0.0.1:6
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' #для тестов.чтобы пистьма не отправлялись а печатались в консоль
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' #для тестов.чтобы пистьма не отправлялись а печатались в консоль
 
 CELERY_BEAT_SCHEDULE = {
     "check-scheduled-campaigns-every-minute": {

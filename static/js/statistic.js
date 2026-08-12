@@ -22,6 +22,19 @@ document.addEventListener("DOMContentLoaded", async function () {
             loadLogs(nextUrl);
         }
     };
+    document.getElementById("search-button").onclick = function () {
+        currentPage = 1;
+        loadFilteredLogs();
+    };
+
+
+    document.getElementById("reset-button").onclick = function () {
+        document.getElementById("search-input").value = "";
+        document.getElementById("status-filter").value = "";
+
+        currentPage = 1;
+        loadLogs("/logs/");
+    };
 });
 
 
@@ -72,6 +85,31 @@ async function loadStatistics() {
     }
 }
 
+function loadFilteredLogs() {
+    const search =
+        document.getElementById("search-input").value.trim();
+
+    const status =
+        document.getElementById("status-filter").value;
+
+    const params = new URLSearchParams();
+
+    if (search) {
+        params.append("search", search);
+    }
+
+    if (status) {
+        params.append("status", status);
+    }
+
+    let url = "/logs/";
+
+    if (params.toString()) {
+        url += "?" + params.toString();
+    }
+
+    loadLogs(url);
+}
 
 async function loadLogs(url) {
     try {
