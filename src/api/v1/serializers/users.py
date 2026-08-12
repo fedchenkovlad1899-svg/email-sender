@@ -1,4 +1,4 @@
-from django.contrib.auth import get_user_model,authenticate
+from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.exceptions import TokenError
@@ -50,16 +50,11 @@ class LoginSerializer(serializers.Serializer):
             user = User.objects.get(email=email)
         except User.DoesNotExist:
             raise serializers.ValidationError("Пользователь не найден")
-        user = authenticate(
-            username=user.username,
-            password=password
-        )
-        if user is None:
+
+        if not user.check_password(password):
             raise serializers.ValidationError("Неверный пароль")
         if not user.is_active:
-            raise serializers.ValidationError(
-                "Ваш аккаунт заблокирован.Обратитесь к администратору"
-            )
+            raise serializers.ValidationError("Ваш аккаунт заблокирован.Обратитесь к администратору")
         refresh = RefreshToken.for_user(user)
         return {
             "refresh": str(refresh),
@@ -140,9 +135,9 @@ class ChangePasswordSerializer(serializers.Serializer):
 
 @extend_schema_serializer(component_name="User_StatusSerializer")
 class UserStatusSerializer(serializers.ModelSerializer):
-    '''
-    статус
-    '''
+    """
+    Статус
+    """
     class Meta:
         model = User
         fields = (

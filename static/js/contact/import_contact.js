@@ -50,8 +50,13 @@ document.addEventListener("DOMContentLoaded", async function () {
             });
             const result = await response.json();
             if (response.ok) {
-                successElement.textContent =
-                    `Импорт завершён. Добавлено контактов: ${result.created || 0}`;
+                successElement.innerHTML = `
+                    Импорт завершён.<br>
+                    Обработано: ${result.total || 0}<br>
+                    Создано: ${result.created || 0}<br>
+                    Пропущено: ${result.skipped || 0}<br>
+                    Ошибок: ${result.errors_count || 0}
+                `;
                 successElement.classList.remove("d-none");
             } else {
                 errorElement.textContent =

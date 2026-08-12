@@ -4,7 +4,7 @@ from email_sender.models import MessageTemplate
 
 class MessageTemplateSerializer(serializers.ModelSerializer):
     """
-     шаблоны писем
+     Шаблоны писем
     """
     class Meta:
         model = MessageTemplate

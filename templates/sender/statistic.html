@@ -44,6 +44,26 @@
     </div>
 
     <h3 class="mb-3">История отправок</h3>
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <input id="search-input" type="text" class="form-control" placeholder="Email получателя или название рассылки">
+        </div>
+
+        <div class="col-md-3">
+            <select id="status-filter" class="form-select">
+                <option value="">Все статусы</option>
+                <option value="sent">Отправлено</option>
+                <option value="failed">Ошибка</option>
+                <option value="pending">Ожидает отправки</option>
+            </select>
+        </div>
+
+        <div class="col-md-3">
+            <button id="search-button" type="button" class="btn btn-primary">Найти</button>
+
+            <button id="reset-button" type="button" class="btn btn-secondary">Сбросить</button>
+        </div>
+    </div>
 
     <div class="table-responsive">
         <table class="table table-bordered table-hover">

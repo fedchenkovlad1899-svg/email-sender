@@ -11,7 +11,6 @@ from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.parsers import MultiPartParser, FormParser
 
 
-#GET /contacts/list
 @extend_schema(tags=['Contact'])
 class ContactListView(generics.ListAPIView):
     """
@@ -43,7 +42,7 @@ class ContactListView(generics.ListAPIView):
         return Contact.objects.filter(owner=self.request.user)
 
 
-#POST /contacts/create/
+
 @extend_schema(tags=['Contact'])
 class ContactCreateView(generics.CreateAPIView):
     """
@@ -55,7 +54,7 @@ class ContactCreateView(generics.CreateAPIView):
         serializer.save(owner=self.request.user)#владелец-кто вошел в систему
 
 
-#GET /contacts/{id}/
+
 @extend_schema(tags=['Contact'])
 class ContactRetrieveView(generics.RetrieveAPIView):
     """
@@ -67,7 +66,7 @@ class ContactRetrieveView(generics.RetrieveAPIView):
         return Contact.objects.filter(owner=self.request.user)
 
 
-#PUT/PATCH /contacts/{id}/update/
+
 @extend_schema(tags=['Contact'])
 class ContactUpdateView(generics.UpdateAPIView):
     """
@@ -79,7 +78,7 @@ class ContactUpdateView(generics.UpdateAPIView):
         return Contact.objects.filter(owner=self.request.user)
 
 
-#DELETE /contacts/{id}/delete/
+
 @extend_schema(
     tags=['Contact'],
     request=None,
