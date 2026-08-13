@@ -44,7 +44,7 @@ class RegisterView(generics.CreateAPIView):
 @extend_schema(tags=['User'])
 class LoginView(generics.GenericAPIView):
     """
-    Авторизация пользователя по email и паролю
+    Аутентификация пользователя по email и паролю
     """
     serializer_class = LoginSerializer
     permission_classes = [AllowAny]
