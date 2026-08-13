@@ -38,7 +38,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 @extend_schema_serializer(component_name="User_LoginSerializer")
 class LoginSerializer(serializers.Serializer):
     """
-    Авторизация пользователя по email и паролю
+    Аутентификация пользователя по email и паролю
     """
     email = serializers.EmailField()
     password = serializers.CharField(write_only=True)
